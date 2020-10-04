@@ -1,8 +1,10 @@
 // this library is public domain. enjoy!
-// https://learn.adafruit.com/thermocouple/
 
-#ifndef ADAFRUIT_MAX6675_H
-#define ADAFRUIT_MAX6675_H
+//***************************************************************************
+// by iPa 04.10.2010
+//***************************************************************************
+#ifndef MAX6675_H
+#define MAX6675_H
 
 #include "stm32f1xx_hal.h"
 #include "stdbool.h"
