@@ -1,5 +1,6 @@
-// this library is public domain. enjoy!
-// https://learn.adafruit.com/thermocouple/
+//***************************************************************************
+// by iPa 04.10.2010
+//***************************************************************************
 
 #include "max6675.h"
 
@@ -19,14 +20,10 @@ static uint8_t SPI_RxByte(SPI_HandleTypeDef *hspi)
   return data;
 }
 
-/**************************************************************************/
-/*!
-    @brief  Initialize a MAX6675 sensor
-    @param   SCLK The Arduino pin connected to Clock
-    @param   CS The Arduino pin connected to Chip Select
-    @param   MISO The Arduino pin connected to Data Out
-*/
-/**************************************************************************/
+//**************************************************************************
+//    Constructor
+//    Input: ^SPI GPIO PIN
+//**************************************************************************
 MAX6675::MAX6675(SPI_HandleTypeDef *hspi, GPIO_TypeDef* CS_Port, uint16_t CS_Pin) {
 	_hspi = hspi;
 	_CS_Port = CS_Port;
@@ -39,14 +36,17 @@ MAX6675::MAX6675(SPI_HandleTypeDef *hspi, GPIO_TypeDef* CS_Port, uint16_t CS_Pin
 
 //**************************************************************************
 //    Init first reading
+//    Give the time for the first reading
+//    Initialise cFiltered
 //**************************************************************************
 void MAX6675::initMeasure(void) {
 	HAL_Delay(250); 									// 4Hz max wait for the first reading
 	_cFiltered = readCelsius(FALSE);
 }
 //**************************************************************************
-//    @brief  Read the Celsius temperature
-//    @returns Temperature
+//    Read Celsius temperature
+//    input bool true if request filtered value
+//    @returns float last Celcius measure (member)
 //**************************************************************************
 float MAX6675::readCelsius(bool filter) {
 	unsigned short data;
@@ -73,32 +73,26 @@ float MAX6675::readCelsius(bool filter) {
 
 }
 
-/**************************************************************************/
-/*!
- *  input bool true if request filtered value
-    @returns flloat ast Celcius measure (member)
-*/
+//**************************************************************************
+//  input bool true if request filtered value
+//  @returns float last Celcius measure (member)
 /**************************************************************************/
 float MAX6675::get_celcius(bool filter) const {
 	if (filter) return (_cFiltered);
 	return (_celcius);
 }
 
-/**************************************************************************/
-/*!
- *  input -
-    @returns TRUE if connected
-*/
+//**************************************************************************
+//  input -
+//  @returns TRUE if connected
 /**************************************************************************/
 bool MAX6675::get_status(void) const {
 	return (_connected);
 }
 
-/**************************************************************************/
-/*!
- *  input bool true if request filtered value
-    @returns flloat ast Celcius measure (member)
-*/
+//**************************************************************************
+//  input level value between 1-99
+//  @returns -
 /**************************************************************************/
 void MAX6675::set_filterLevel(uint8_t level) {
 	if (level>=100)level = 99;
